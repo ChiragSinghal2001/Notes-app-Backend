@@ -1,15 +1,19 @@
-const express = require('express');
-const app = express();
-
-const mongoose = require('mongoose');
+const express = require ('express');
+const mongoose = require ('mongoose');
 const Note = require('./src/models/note');
+const noteRouter = require('./src/routes/note');
+
+const app = express();
+const cors= require('cors');
+app.use(cors());
 
 const bodyParser = require('body-parser');
 const { $where } = require('./src/models/note');
 app.use(bodyParser.urlencoded({extended: false }));
 app.use(bodyParser.json());
+app.use(express.json());
 
-mongoose.connect("mongodb+srv://Chiragsinghal:CS123@slantcoding.ldjfxtd.mongodb.net/?retryWrites=true&w=majority", {
+mongoose.connect("mongodb+srv://Chiragsinghal:CS123@slantcoding.ldjfxtd.mongodb.net/test?retryWrites=true&w=majority", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 }).then(function(){
@@ -20,10 +24,12 @@ mongoose.connect("mongodb+srv://Chiragsinghal:CS123@slantcoding.ldjfxtd.mongodb.
     res.json(response);
   });
 
-  const noteRouter = require('./src/routes/note');
+  
   app.use("/notes" , noteRouter);
 
-  
+  // app.use("/khelo" , rou);
+
+ 
    const PORT = process.env.PORT || 3000;
   app.listen(PORT, function() {
     console.log("Server started at PORT: "  + PORT);
